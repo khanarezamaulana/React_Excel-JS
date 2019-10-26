@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import FileSaver from 'file-saver'
 
 const Excel = require("exceljs");
 
@@ -42,15 +43,20 @@ class App extends React.Component {
       .addRows(rows);
 
     // save workbook to disk
-    workbook
-      .xlsx
-      .writeFile('sample.xlsx')
-      .then(() => {
-        console.log("saved");
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
+    // workbook.xlsx.writeFile('sample.xlsx')
+    //   .then(() => {
+    //     console.log("saved");
+    //   })
+    //   .catch((err) => {
+    //     console.log("err", err);
+    //   });
+   workbook.xlsx.writeBuffer()
+  .then(buffer => {
+    FileSaver.saveAs(new Blob([buffer]), `${Date.now()}_feedback.xlsx`);
+    console.log('Berhasil Yeay')
+  })
+  .catch(err => console.log('Error writing excel export', err))
+    
   }
 
   render () {
